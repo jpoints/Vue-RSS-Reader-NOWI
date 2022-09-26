@@ -61,9 +61,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"> 
     <script src="https://cdn.melody.moderncampus.net/core/tiles/v1/api.js"></script> 
     <link rel="canonical" href="https://nowi.org/news.html">
+    <script type="module" src="/src/main.js"></script>
    </head>
   <body>
-    <div id="app" data-feed="https://melody-cmsrc-20222.oucampusdemo.com/test.rss" style="width:100%"></div>
-    <script type="module" src="/src/main.js"></script>
+    <div id="app" feed="https://melody-cmsrc-20222.oucampusdemo.com/test.rss" style="width:100%">
+        <reader feed="/test.rss"></reader>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+          console.log(window)
+          new FeedApp({ 
+            mountedEl: document.getElementById('app')
+          });
+    });
+  </script>
   </body>
 </html>

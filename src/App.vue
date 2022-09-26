@@ -3,18 +3,29 @@
   
   export default defineComponent({
     props:{
-      feed:String
+      feed:String,
+      loading:String,
+      error:String,
     },
     setup(props){
 
     let state = ref('loading');
-    let errorMessage = ref("");
+    let errorMessage = props.error || "We ere not able to find any news items. Try refreshing the browser.";
+    let loading = props.loading || ""; 
     let data = ref([]);
     let feed = props.feed;
 
     onMounted(async () => {
-      data.value = await xmltojson(feed);
-        if (data.value.length > 0) {
+      try{
+        data.value = await xmltojson(feed);
+      }
+      catch(err){
+        console.log("An error occured when trying to read the rss feed.");
+        state.value = "error";
+        return
+      }
+
+      if (data.value.length > 0) {
 
               //sort the items by date
               data.value.sort(function(item1, item2) {
@@ -49,6 +60,8 @@
       return {
         state,
         data,
+        loading,
+        errorMessage,
         formatDate
       }
 
@@ -124,7 +137,11 @@
 
 <template>
   <div v-if="state === 'loading'">
-      Loading
+    <section class="inner-page"> 
+        <div class="container"> 
+          <h2>{{loading}}</h2> 
+        </div>
+    </section> 
   </div>
   <div v-else-if="state === 'loaded'">
     <div v-for="(category,index) in data" :key="category">
@@ -132,7 +149,6 @@
         <div class="container"> 
           <h2>{{index}}</h2> 
         </div> 
-      </section>
       <div v-for="item in category" :key="item.title">
           <div class="flex-container nowiNews" data-name="newsItem">
             <div class="flex-item-left"  v-if="item.media.length > 0">
@@ -148,9 +164,10 @@
           </div>
           <hr> 
         </div>
+      </section>
     </div>
   </div>
   <div v-else>
-      Error
+    <section class="inner-page"><div class="container"><h2>September 2022</h2></div><div><div class="flex-container nowiNews" data-name="newsItem"><div class="flex-item-left"><img src="https://nowi.org/_resources/images/Brayton-Point.jpg" alt="Brayton Point"></div><div class="flex-item-right-1"><h3>Prysmian Group: New Submarine Cable Plant in the USA</h3><h4>September 18, 2022</h4><p>The press release is here from Prysmian Group and CDC Commercial Development Company announcing the signing of the contract for the purchase by Prysmian of the site identified in Brayton Point, Somerset, MA. (NOTE: The final acquisition of the site is subject to securing state permits for the construction of the new plant. Prysmian Group’s total investment to build the new plant will amount to around $200 million.) <strong><a href="https://www.prysmiangroup.com/en/press-releases/prysmian-group-new-submarine-cable-plant-in-the-usa">Read more</a></strong><span>.</span></p><p><em>-photo rendering of proposed manufacturing facility</em></p></div></div><hr></div><div><div class="flex-container nowiNews" data-name="newsItem"><div class="flex-item-left"><img src="https://nowi.org/_resources/images/DEME-LLC.jpg" alt="DEME LLC"></div><div class="flex-item-right-1"><h3>Vineyard Wind Selects DEME Offshore US for Wind Turbine Installation</h3><h4>September 15, 2022</h4><p>VINEYARD WIND, a joint venture between Avangrid Renewables and Copenhagen Infrastructure Partners (CIP) announced in February that DEME Offshore US LLC will serve as its contractor for the offshore transport and installation of the wind turbine generators for its Vineyard Wind 1 project, the first large scale offshore wind installation in the United States.  <strong><a href="https://www.vineyardwind.com/press-releases/2021/3/31/vineyard-wind-selects-deme-offshore-us-for-wind-turbine-installation?fbclid=IwAR3JMya303efWbMWVo4L5kJ_h6Ujd3oKsHc0ZhH-DbQMrxrUDuwBHA9Vl_4"> Read the Vineyard Wind article</a></strong><span>.</span></p><!--v-if--></div></div><hr></div></section>
   </div>
 </template>
