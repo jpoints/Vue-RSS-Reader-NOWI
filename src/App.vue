@@ -20,7 +20,7 @@
         data.value = await xmltojson(feed);
       }
       catch(err){
-        console.log("An error occured when trying to read the rss feed.");
+        console.log("An error occured when trying to read the rss feed.", err);
         state.value = "error";
         return
       }
@@ -88,15 +88,13 @@
     return string;
   }
 
- 
-
   async function xmltojson(feed){
     let articles = [];
     let article = {};
     article.media = [];
     let mediacontent = {};
 
-    await fetch(feed,{cache: "no-store"})
+    await fetch(feed,{cache: "no-store",  mode: 'cors'})
             .then(res => res.text())
             .then(text => (new window.DOMParser()).parseFromString(text, "text/xml"))
             .then(data => {
