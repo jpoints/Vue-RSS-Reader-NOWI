@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
 <channel>
-<title>test</title>
-<link>https://www.google.com/</link>
-<description>test</description>
+<title>News RSS</title>
+<link>https://nowi.org/</link>
+<description>RSS for news page</description>
 <language>en-us</language>
-<lastBuildDate>Thu, 22 Sep 2022 18:50:58 -0700</lastBuildDate>
+<lastBuildDate>Thu, 29 Sep 2022 14:11:39 -0400</lastBuildDate>
 <docs>http://blogs.law.harvard.edu/tech/rss</docs>
 <generator>OmniUpdate (OU Publish)</generator>
 

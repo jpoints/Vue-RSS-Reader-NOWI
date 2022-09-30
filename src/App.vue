@@ -156,7 +156,7 @@
             <div class="flex-item-right-1"> 
               <h3>{{item.title}}</h3> 
               <h4>{{formatDate(item.pubDate)}}</h4> 
-              <p>{{item.description}} <strong v-if="item.link"><a :href=item.link >{{item.linktext || "Read more"}}</a></strong><span>.</span></p> 
+              <p>{{item.description}} <strong v-if="item.linktext && item.link"><a :href=item.link >{{item.linktext}}.</a></strong></p> 
               <p v-if="item.media.length > 0 && item.media[0].description" ><em>-{{item.media[0].description}}</em></p>
             </div> 
           </div>
